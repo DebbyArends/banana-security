@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Link, useHistory} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {AuthContext} from "../components/AuthContext/AuthContext";
 import {useForm} from "react-hook-form";
 

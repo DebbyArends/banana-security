@@ -4,7 +4,10 @@ import {useHistory} from "react-router-dom";
 export const AuthContext = createContext({});
 
 function AuthContextProvider({children}) {
-    const [isAuth, toggleIsAuth] = useState(false);
+    const [isAuth, toggleIsAuth] = useState({
+        isAuth: false,
+        user: null,
+    });
     const history = useHistory();
 
     function signIn() {
@@ -20,7 +23,8 @@ function AuthContextProvider({children}) {
     }
 
     const data = {
-        auth: isAuth,
+        isAuth: isAuth.isAuth,
+        user: isAuth.user,
         login: signIn,
         logout: signOut,
     };
