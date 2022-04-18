@@ -1,20 +1,22 @@
-import React, {useEffect} from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link,useHistory } from 'react-router-dom';
 import {useForm} from "react-hook-form";
 import axios from "axios";
 
 function SignUp() {
     const {register,handleSubmit} = useForm()
+    const history = useHistory()
 
 
-    async function onFormSubmit(data) {
+async function onFormSubmit(data) {
         try {
-            // await axios.post('http://localhost:3000/register'),
-            //     {
-            //     email: "klaas@novi.nl",
-            //         password: "123456",
-            //     username: "klaasie",
-            //     }
+            await axios.post('http://localhost:3000/register',
+                {
+                    email: data.email,
+                    password: data.password,
+                    username: data.username,
+                })
+            history.push("/signin")
         }
         catch (e) {
             console.error(e)
@@ -33,7 +35,7 @@ function SignUp() {
               <input
                   type="email"
                   id="email-address"
-                  {...register("email-address")}
+                  {...register("email")}
               />
           </label>
           <label htmlFor="password">

@@ -2,13 +2,25 @@ import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
 import {AuthContext} from "../components/AuthContext/AuthContext";
 import {useForm} from "react-hook-form";
+import axios from "axios";
 
 function SignIn() {
     const {login} = useContext(AuthContext);
     const {register, handleSubmit} = useForm();
 
-    function onFormSubmit() {
-        login();
+
+    async function onFormSubmit(data) {
+        try {
+            const result = await axios.post('http://localhost:3000/login',
+                {
+                    email: data.email,
+                    password: data.password,
+                })
+            login(result.data.accessToken)
+        }
+        catch (e) {
+            console.error(e)
+        }
     }
 
     return (
@@ -23,7 +35,7 @@ function SignIn() {
                     <input
                         type="email"
                         id="email-address"
-                        {...register("email-address")}
+                        {...register("email")}
                     />
                 </label>
                 <label htmlFor="password">

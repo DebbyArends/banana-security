@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Switch, Route} from 'react-router-dom';
+import {Switch, Route, Redirect} from 'react-router-dom';
 import NavBar from './components/NavBar/NavBar';
 import Profile from './pages/Profile';
 import Home from './pages/Home';
@@ -9,7 +9,7 @@ import './App.css';
 import {AuthContext} from "./components/AuthContext/AuthContext";
 
 function App() {
-  const {auth} = useContext(AuthContext)
+  const {isAuth} = useContext(AuthContext)
 
   return (
     <>
@@ -19,11 +19,13 @@ function App() {
           <Route exact path="/">
             <Home />
           </Route>
-          {auth &&
+          {isAuth ?
           <Route path="/profile">
-            <Profile />
+            <Profile/>
           </Route>
-            }
+              :
+              <Redirect to="/"/>
+          }
           <Route exact path="/signin">
             <SignIn />
           </Route>
