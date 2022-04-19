@@ -16,18 +16,20 @@ function AuthContextProvider({children}) {
         const token = localStorage.getItem("token")
 
         if (token){
-
             //is de token nog geldig? decodeer de token en check de exp key en vergelijk met new Date();
             const decoded = jwtDecode(token)
-            console.log(decoded);
-
-            getUserData(decoded.sub, decoded)
+            if (Date.now() >= decoded.exp * 1000) {
+                return history.push("/login")
+            } else {
+                return getUserData(decoded.sub, decoded)
+                }
         } else {
             toggleIsAuth({
                 ...isAuth,
                 status: 'done',
             })
         }
+        console.log("Context wordt gerefresht!");
     }, [])
 
     const history = useHistory()

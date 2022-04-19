@@ -19,13 +19,11 @@ function App() {
           <Route exact path="/">
             <Home />
           </Route>
-          {isAuth ?
           <Route path="/profile">
-            <Profile/>
+            {isAuth ?
+            <Profile/>:
+              <Redirect to="/"/>}
           </Route>
-              :
-              <Redirect to="/"/>
-          }
           <Route exact path="/signin">
             <SignIn />
           </Route>
