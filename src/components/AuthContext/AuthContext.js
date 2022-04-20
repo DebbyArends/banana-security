@@ -2,7 +2,6 @@ import React, {createContext, useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
-import isTokenExpired from "../../helpers/isTokenExpired";
 
 export const AuthContext = createContext({});
 
@@ -19,12 +18,7 @@ function AuthContextProvider({children}) {
         if (token){
             //is de token nog geldig? decodeer de token en check de exp key en vergelijk met new Date();
             const decoded = jwtDecode(token)
-            // (isTokenExpired === true)
-            if (Date.now() >= decoded.exp * 1000) {
-                return history.push("/login")
-            } else {
-                return getUserData(decoded.sub, decoded)
-                }
+            getUserData(decoded.sub, decoded)
         } else {
             toggleIsAuth({
                 ...isAuth,
