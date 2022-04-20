@@ -9,31 +9,31 @@ import './App.css';
 import {AuthContext} from "./components/AuthContext/AuthContext";
 
 function App() {
-  const {isAuth} = useContext(AuthContext)
+    const {isAuth} = useContext(AuthContext);
 
-  return (
-    <>
-      <NavBar />
-      <div className="content">
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/profile">
-            {isAuth ?
-            <Profile/>:
-              <Redirect to="/"/>}
-          </Route>
-          <Route exact path="/signin">
-            <SignIn />
-          </Route>
-          <Route exact path="/signup">
-            <SignUp />
-          </Route>
-        </Switch>
-      </div>
-    </>
-  );
+    return (
+        <>
+            <NavBar/>
+            <div className="content">
+                <Switch>
+                    <Route exact path="/">
+                        <Home/>
+                    </Route>
+                    <Route path="/profile">
+                        {isAuth ?
+                            <Profile/> :
+                            <Redirect to="/"/>}
+                    </Route>
+                    <Route exact path="/signin">
+                        <SignIn/>
+                    </Route>
+                    <Route exact path="/signup">
+                        <SignUp/>
+                    </Route>
+                </Switch>
+            </div>
+        </>
+    );
 }
 
 export default App;

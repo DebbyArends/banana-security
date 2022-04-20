@@ -13,69 +13,69 @@ function AuthContextProvider({children}) {
     });
 
     useEffect(() => {
-        const token = localStorage.getItem("token")
+        const token = localStorage.getItem("token");
 
-        if (token){
+        if (token) {
             //is de token nog geldig? decodeer de token en check de exp key en vergelijk met new Date();
-            const decoded = jwtDecode(token)
-            getUserData(decoded.sub, decoded)
+            const decoded = jwtDecode(token);
+            getUserData(decoded.sub, token);
         } else {
             toggleIsAuth({
                 ...isAuth,
                 status: 'done',
-            })
+            });
         }
         console.log("Context wordt gerefresht!");
-    }, [])
+    }, []);
 
-    const history = useHistory()
+    const history = useHistory();
 
-    async function getUserData(id, token){
+    async function getUserData(id, token) {
         try {
             const result = await axios.get(`http://localhost:3000/600/users/${id}`, {
-                headers:{
+                headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-            })
+            });
             toggleIsAuth(
-                {...isAuth,
+                {
+                    ...isAuth,
                     isAuth: true,
                     user: {
-                        id:result.data.id,
+                        id: result.data.id,
                         username: result.data.username,
                         email: result.data.email,
                     },
                     status: 'done',
-                })
-        }
-        catch (e) {
-            console.error(e)
+                });
+        } catch (e) {
+            console.error(e);
             toggleIsAuth({
                 ...isAuth,
                 status: 'done',
-            })
+            });
         }
     }
 
     function signIn(jwt) {
-        const decoded = jwtDecode(jwt)
-        getUserData(decoded.sub, jwt);
+        const decoded = jwtDecode(jwt);
+        getUserData(decoded.sub, jwt, history.push('/profile'));
         localStorage.setItem("token", jwt);
         console.log('Gebruiker is ingelogd');
-        history.push('/profile');
     }
 
 
     function signOut() {
         toggleIsAuth(
-            {...isAuth,
-            isAuth: false,
+            {
+                ...isAuth,
+                isAuth: false,
                 user: null,
-        })
+            });
         console.log('Gebruiker is uitgelogd');
         history.push('/');
-        localStorage.clear()
+        localStorage.clear();
     }
 
     const data = {
@@ -87,7 +87,7 @@ function AuthContextProvider({children}) {
 
     return (
         <AuthContext.Provider value={data}>
-            {isAuth.status === 'done' ? children: <p>Loading...</p>}
+            {isAuth.status === 'done' ? children : <p>Loading...</p>}
         </AuthContext.Provider>
     );
 }
